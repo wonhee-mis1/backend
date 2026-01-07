@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', lambda request: JsonResponse({"message": "diary api"})),
-    path('create/', views.create_diary),
+    path('post/', views.post_diary),
 ]

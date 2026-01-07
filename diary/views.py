@@ -10,7 +10,7 @@ user = User.objects.first()
 
 @csrf_exempt
 @require_POST
-def create_diary(request):
+def post_diary(request):
     data = json.loads(request.body)
 
     entry = DiaryEntry.objects.create(
@@ -21,5 +21,5 @@ def create_diary(request):
 
     return JsonResponse({
         "id": entry.id,
-        "message": "created"
+        "message": "작성 완료되었습니다"
     })
