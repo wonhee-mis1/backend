@@ -24,5 +24,6 @@ def health_check(request):
 urlpatterns = [
     path('', health_check),
     path('admin/', admin.site.urls),
+    path('api/', include('rest_framework.urls')),
     path('api/diary/', include('diary.urls')),
 ]
