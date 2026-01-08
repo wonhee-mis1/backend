@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import path, include
 
+import accounts
+
+
 def health_check(request):
     return JsonResponse({'status': 'ok'})
 
@@ -26,4 +29,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rest_framework.urls')),
     path('api/diary/', include('diary.urls')),
+    path('api/auth/', include('accounts.urls')),
 ]
