@@ -1,12 +1,13 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
+
 class DiaryEntry(models.Model):
   user = models.ForeignKey(
     User,
     on_delete=models.CASCADE,
-    related_name="diary_entries"
   )
-  entry_date = models.DateField()
+  entry_date = models.DateField(auto_now_add=True)
   content = models.TextField()
 
   # AI 결과 (일단 null 허용)

@@ -1,25 +1,22 @@
-import json
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import DiaryEntry
-from datetime import date
+from .serializer import DiaryEntrySerializer
 
-user = User.objects.first()
 
-@csrf_exempt
-@require_POST
-def post_diary(request):
-    data = json.loads(request.body)
+class DiaryEntryAPIView(APIView):
+  def get(self, request):
+    user = User.objects.first()
+    queryset = DiaryEntry.objects.filter(user=user).order_by("-entry_date")
+    serializer = DiaryEntrySerializer(queryset, many=True)
+    return Response(serializer.data)
 
-    entry = DiaryEntry.objects.create(
-        user=user,
-        entry_date=data.get("entry_date", date.today()),
-        content=data["content"]
-    )
-
-    return JsonResponse({
-        "id": entry.id,
-        "message": "작성 완료되었습니다"
-    })
+  def post(self, request):
+    serializer = DiaryEntrySerializer(data=request.data, context={'request': request})
+    if serializer.is_valid():
+      serializer.save(user=User.objects.first())
+      return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

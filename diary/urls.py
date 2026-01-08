@@ -1,8 +1,7 @@
-from django.http import JsonResponse
 from django.urls import path
-from . import views
+
+from .views import DiaryEntryAPIView
 
 urlpatterns = [
-    path('', lambda request: JsonResponse({"message": "diary api"})),
-    path('post/', views.post_diary),
+    path("", DiaryEntryAPIView.as_view()),
 ]
